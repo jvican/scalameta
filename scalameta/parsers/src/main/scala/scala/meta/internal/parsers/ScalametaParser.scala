@@ -726,6 +726,8 @@ class ScalametaParser(input: Input, dialect: Dialect) { parser =>
       Some(atPos(tree, tree)(Term.Param(Nil, name, None, None)))
     case name: Term.Placeholder =>
       Some(atPos(tree, tree)(Term.Param(Nil, atPos(name, name)(Name.Anonymous()), None, None)))
+    case Term.Ascribe(name: Term.Name.Quasi, tpe: Type.Quasi) =>
+      Some(atPos(tree, tree)(Term.Param(Nil, name, Some(tpe), None)))
     case Term.Ascribe(name: Term.Name, tpt) =>
       Some(atPos(tree, tree)(Term.Param(Nil, name, Some(tpt), None)))
     case Term.Ascribe(name: Term.Placeholder, tpt) =>
@@ -1660,6 +1662,7 @@ class ScalametaParser(input: Input, dialect: Dialect) { parser =>
               case Term.Quasi(0, _) => true
               case Term.Quasi(1, ParamLike()) => true
               case NameLike() => true
+              case Term.Ascribe(ParamLike(), _) => true
               case Term.Ascribe(NameLike(), _) => true
               case _ => false
             }
