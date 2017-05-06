@@ -15,7 +15,7 @@ trait Reflection extends AdtReflection {
     }
     def isFreeform: Boolean = {
       Predef.require(sym.isToken)
-      val Some(q"new $_($_, ${freeform: Boolean})") = sym.getAnnotation[TokenMetadata.tokenClass]
+      val Some(q"new ${_}(${_}, ${freeform: Boolean})") = sym.getAnnotation[TokenMetadata.tokenClass]
       freeform
     }
     def isFixed: Boolean = {
@@ -23,7 +23,7 @@ trait Reflection extends AdtReflection {
     }
     def tokenName: String = {
       Predef.require(sym.isToken)
-      val Some(q"new $_(${tokenName: String}, $_)") = sym.getAnnotation[TokenMetadata.tokenClass]
+      val Some(q"new ${_}(${tokenName: String}, ${_})") = sym.getAnnotation[TokenMetadata.tokenClass]
       tokenName
     }
   }

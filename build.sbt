@@ -8,7 +8,7 @@ import UnidocKeys._
 import sbt.ScriptedPlugin._
 import com.trueaccord.scalapb.compiler.Version.scalapbVersion
 
-lazy val LanguageVersions = Seq("2.11.11", "2.12.2")
+lazy val LanguageVersions = Seq("2.10.6", "2.11.11", "2.12.2")
 lazy val LanguageVersion = LanguageVersions.head
 lazy val LibraryVersion = sys.props.getOrElseUpdate("scalameta.version", os.version.preRelease())
 
@@ -594,7 +594,7 @@ def macroDependencies(hardcore: Boolean) = libraryDependencies ++= {
   }
   val backwardCompat210 = {
     if (scalaVersion.value.startsWith("2.10"))
-      Seq("org.scalamacros" %% "quasiquotes" % "2.1.0")
+      Seq("org.scalamacros" %% "quasiquotes" % "2.1.0", "org.typelevel" %% "macro-compat" % "1.1.1")
     else Seq()
   }
   scalaReflect ++ scalaCompiler ++ backwardCompat210

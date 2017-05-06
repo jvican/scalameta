@@ -36,7 +36,7 @@ trait ImplTransformers {
           if (allowed.length > 1) allowed.dropRight(1).mkString(", ") + " and " + allowed.last
           else allowed.mkString
         }
-        val q"new $s_name(...$_).macroTransform(..$_)" = c.macroApplication
+        val q"new $s_name(...${_}).macroTransform(..${_})" = c.macroApplication
         c.abort(annottees.head.pos, s"only $s_allowed can be $s_name")
       }
 

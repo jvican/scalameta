@@ -40,7 +40,7 @@ class TokenNamerMacros(val c: Context) extends MacroHelpers {
 
   private def impl(annottees: Seq[Tree], isFixed: Boolean): Tree = annottees.transformAnnottees(new ImplTransformer {
     override def transformClass(cdef: ClassDef, mdef: ModuleDef): List[ImplDef] = {
-      val q"new $_(...$argss).macroTransform(..$_)" = c.macroApplication
+      val q"new ${_}(...$argss).macroTransform(..${_})" = c.macroApplication
       val providedTokenName = argss match {
         case List(List(Literal(Constant(tokenName: String)))) => tokenName
         case _ => c.abort(c.enclosingPosition, "@token annotation takes a literal string argument")

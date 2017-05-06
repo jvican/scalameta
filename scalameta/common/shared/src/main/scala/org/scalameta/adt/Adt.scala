@@ -83,7 +83,7 @@ class AdtNamerMacros(val c: Context) extends MacroHelpers {
 
   def leaf(annottees: Tree*): Tree = annottees.transformAnnottees(new ImplTransformer {
     override def transformClass(cdef: ClassDef, mdef: ModuleDef): List[ImplDef] = {
-      val q"new $_(...$argss).macroTransform(..$_)" = c.macroApplication
+      val q"new ${_}(...$argss).macroTransform(..${_})" = c.macroApplication
       val q"$mods class $name[..$tparams] $ctorMods(...$paramss) extends { ..$earlydefns } with ..$parents { $self => ..$stats }" = cdef
       val q"$mmods object $mname extends { ..$mearlydefns } with ..$mparents { $mself => ..$mstats }" = mdef
       val classRef = typeRef(cdef, requireHk = false, requireWildcards = true)
@@ -112,7 +112,7 @@ class AdtNamerMacros(val c: Context) extends MacroHelpers {
     }
 
     override def transformModule(mdef: ModuleDef): ModuleDef = {
-      val q"new $_(...$argss).macroTransform(..$_)" = c.macroApplication
+      val q"new ${_}(...$argss).macroTransform(..${_})" = c.macroApplication
       val q"$mmods object $mname extends { ..$mearlydefns } with ..$mparents { $mself => ..$mstats }" = mdef
       val manns1 = ListBuffer[Tree]() ++ mmods.annotations
       def mmods1 = mmods.mapAnnotations(_ => manns1.toList)
@@ -135,7 +135,7 @@ class AdtNamerMacros(val c: Context) extends MacroHelpers {
 
   def none(annottees: Tree*): Tree = annottees.transformAnnottees(new ImplTransformer {
     override def transformModule(mdef: ModuleDef): ModuleDef = {
-      val q"new $_(...$argss).macroTransform(..$_)" = c.macroApplication
+      val q"new ${_}(...$argss).macroTransform(..${_})" = c.macroApplication
       val q"$mmods object $mname extends { ..$mearlydefns } with ..$mparents { $mself => ..$mstats }" = mdef
       val manns1 = ListBuffer[Tree]() ++ mmods.annotations
       def mmods1 = mmods.mapAnnotations(_ => manns1.toList)

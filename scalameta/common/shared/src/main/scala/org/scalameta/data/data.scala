@@ -47,7 +47,7 @@ class DataMacros(val c: Context) extends MacroHelpers {
         def mkByneed = Modifiers(mods.flags, mods.privateWithin, mods.annotations :+ q"new $AdtMetadataModule.byNeedField")
       }
       def needs(name: Name, companion: Boolean, duplicate: Boolean) = {
-        val q"new $_(...$argss).macroTransform(..$_)" = c.macroApplication
+        val q"new ${_}(...$argss).macroTransform(..${_})" = c.macroApplication
         val banIndicator = argss.flatten.find {
           case AssignOrNamedArg(Ident(TermName(param)), Literal(Constant(false))) => param == name.toString
           case _ => false
@@ -270,7 +270,7 @@ class DataMacros(val c: Context) extends MacroHelpers {
 
   def none(annottees: Tree*): Tree = annottees.transformAnnottees(new ImplTransformer {
     override def transformModule(mdef: ModuleDef): ModuleDef = {
-      val q"new $_(...$argss).macroTransform(..$_)" = c.macroApplication
+      val q"new ${_}(...$argss).macroTransform(..${_})" = c.macroApplication
       val q"$mmods object $mname extends { ..$mearlydefns } with ..$mparents { $mself => ..$mstats }" = mdef
       val manns1 = ListBuffer[Tree]() ++ mmods.annotations
       def mmods1 = mmods.mapAnnotations(_ => manns1.toList)

@@ -46,7 +46,7 @@ package invariants {
     }
 
     def requireCast[U](ev: c.Tree)(U: c.WeakTypeTag[U]): c.Tree = {
-      val q"$_($x)" = c.prefix.tree
+      val q"${_}($x)" = c.prefix.tree
       q"""
         val temp = ${c.untypecheck(x)}
         val tempClass = if (temp != null) temp.getClass else null
@@ -143,7 +143,7 @@ package invariants {
       }
 
       def propify(tree: Tree): Prop = tree match {
-        case q"$_.debug(..$_)" => Debug()
+        case q"${_}.debug(..${_})" => Debug()
         case q"!$x" => Not(propify(x))
         case q"$x && $y" => And(propify(x), propify(y))
         case q"$x || $y" => Or(propify(x), propify(y))
@@ -151,9 +151,9 @@ package invariants {
         case q"$x != $y" => Ne(Atom(x), Atom(y))
         case q"$x.forall($y)" => Forall(Atom(x), Atom(y))
         case q"$x.exists($y)" => Exists(Atom(x), Atom(y))
-        case q"$_.Implication($x).==>($y)" => Imply(Atom(x), Atom(y))
-        case q"$_.Implication($x).<==($y)" => Imply(Atom(y), Atom(x))
-        case q"$_.Implication($x).<==>($y)" => And(Imply(Atom(x), Atom(y)), Imply(Atom(y), Atom(x)))
+        case q"${_}.Implication($x).==>($y)" => Imply(Atom(x), Atom(y))
+        case q"${_}.Implication($x).<==($y)" => Imply(Atom(y), Atom(x))
+        case q"${_}.Implication($x).<==>($y)" => And(Imply(Atom(x), Atom(y)), Imply(Atom(y), Atom(x)))
         case x => Atom(x)
       }
 
